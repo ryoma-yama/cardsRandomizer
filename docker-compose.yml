@@ -1,0 +1,26 @@
+# Top-level version property is defined by the specification for backward compatibility but is only informative.
+version: '3.8'
+
+services:
+  # サービス名を指定します。コンテナ名になります。
+  app:
+  # カレントディレクトリ（.）にあるDockerfileを使用して、イメージをビルドします。
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    # ホストの3000番ポートをコンテナの3000番ポートにマッピングします。
+    ports:
+      - "3000:3000"
+    volumes:
+    # ホストのカレントディレクトリ（.）をコンテナの/appにマウントします。
+      - ./src:/app
+    # node_modulesを名前付きボリュームに隠す
+      - front_node_modules:/app/node_modules
+    # コンテナ起動時に実行するコマンドを指定します。
+    # `sh -c` means "run the following Command in a SHell"
+    command: sh -c "npm run dev"
+    # teletype（TTY）を有効にします。
+    tty: true
+
+volumes:
+  front_node_modules:
